@@ -57,29 +57,48 @@ async function main() {
     let privateKey = "c7fa31026c39a656aba0858797801ddeb52e416a0a6b06a55285cfd735eda19b"//process.env.PRIVATE_KEY_ACCT_1   //owner privkey
     let wallet = new ethers.Wallet(privateKey, provider)
 
+
+    let amountToSend = ethers.utils.parseUnits("10", "gwei").toString();
+    await ercContractDeployed.transfer(acct3.address, amountToSend);
+
+    let sentret = BigInt(await ercContractDeployed.balanceOf(acct3.address)).toString();
+    console.log('Value of acct3: ', sentret)
+
+    //getting a nonce error here. need to increment. We could also just run these all as tests. Maybe works?
+    // let nonce = provider.getTransactionCount(owner.address, "latest");
+
+    let acct2Balance = await ercContractDeployed.transfer(acct2.address, ethers.utils.parseUnits("40", "gwei"))
+    sentret = BigInt(await ercContractDeployed.balanceOf(acct2.address)).toString();
+    console.log('Value of acct2: ', sentret)
+
+    await ercContractDeployed.connect(acct2).approve(owner.address, ethers.utils.parseUnits("1", "gwei").toString());
+    await ercContractDeployed.transferFrom(acct2.address, acct3.address, ethers.utils.parseUnits("1", "gwei").toString());
+    let balanceOfAcct3 = BigInt(await ercContractDeployed.balanceOf(acct3.address)).toString();
+    console.log('Value of my account is ', sentret)
+
     // const gas_price = await provider.getGasPrice();
     // console.log("gas price: ", gasPrice)
 
-    let gas_limit = "0x100000"
-    let gas_price = "0xFFFFF"
+    // let gas_limit = "0x100000"
+    // let gas_price = "0xFFFFF"
 
-    let amountInEther = '0.00001'
-    let tx = {
-      from: owner.address,
-      to: acct3.address,
-      value: ethers.utils.parseEther(amountInEther),
-      gasPrice: gas_price,
-      gasLimit: gas_limit,
-      nonce: provider.getTransactionCount(owner.address, "latest"),
-    }
+    // let amountInEther = '0.00001'
+    // let tx = {
+    //   from: owner.address,
+    //   to: acct3.address,
+    //   value: ethers.utils.parseEther(amountInEther),
+    //   gasPrice: gas_price,
+    //   gasLimit: gas_limit,
+    //   nonce: provider.getTransactionCount(owner.address, "latest"),
+    // }
 
-    const signedTx = await wallet.signTransaction(tx)
-    console.log('signed tx: ', signedTx)
+    // const signedTx = await wallet.signTransaction(tx)
+    // console.log('signed tx: ', signedTx)
 
-    // wallet.sendTransaction(tx)
+    // // wallet.sendTransaction(tx)
 
-    const hash = await provider.sendTransaction(signedTx)
-    console.log("hash: ", hash)
+    // const hash = await provider.sendTransaction(signedTx)
+    // console.log("hash: ", hash)
       
     //   ).then((txObj) => {
     //   console.log('txHash', txObj.hash)

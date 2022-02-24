@@ -24,3 +24,10 @@ PRIVATE_KEY_ACCT_1="<priv_key_1>"
 PRIVATE_KEY_ACCT_2="<priv_key_2>"
 PRIVATE_KEY_ACCT_3="<priv_key_3>"
 ```
+
+0) Install hardhat
+1) Setup alchemy api
+2) Deploy contract
+2a) can deploy on localhost or Kovan or Rinkeby testnets
+3) install hardhat shortcut `hh`
+4) Run: `hh run --network kovan scripts/send-tokens.js`
